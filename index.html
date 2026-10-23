@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Endless Dungeon</title>
+<meta name="description" content="2D 도트 자동 전투 로그라이크. 끝없는 던전을 걸으며 레벨을 올리고, 영구 성장으로 다음 보스를 넘는다.">
+<link rel="icon" href="assets/sprites/player/player_walk.png">
+<style>
+  /* 게임 로비(src/ui/ui.css)와 같은 팔레트 */
+  @font-face { font-family: Galmuri11; src: url(assets/fonts/Galmuri11.woff2) format('woff2'); font-display: swap; }
+  @font-face { font-family: Galmuri11Bold; src: url(assets/fonts/Galmuri11-Bold.woff2) format('woff2'); font-display: swap; }
+  :root {
+    color-scheme: dark;
+    --bg: #181425;
+    --panel: #262b44;
+    --panel-2: #3a4466;
+    --line: #5a6988;
+    --text: #ead4aa;
+    --muted: #8b9bb4;
+    --gold: #feae34;
+    --title: #fee761;
+    --essence: #b55cff;
+    --good: #63c74d;
+    --bad: #ff5577;
+    --accent: #2ce8f5;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.7 Galmuri11, 'Malgun Gothic', monospace;
+    -webkit-font-smoothing: none;
+  }
+  img.px { image-rendering: pixelated; }
+  a { color: var(--accent); }
+  h1, h2, h3, .bold { font-family: Galmuri11Bold, Galmuri11, monospace; font-weight: normal; }
+  .wrap { max-width: 960px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+  body::before { content: ''; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  /* 상단 메뉴 */
+  nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    border-bottom: 2px solid var(--panel-2);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 4px; height: 52px; }
+  nav .logo { display: flex; align-items: center; gap: 8px; color: var(--title); text-decoration: none; margin-right: auto; }
+  nav .logo .walker { width: 32px; height: 32px; }
+  nav a.tab { color: var(--muted); text-decoration: none; padding: 6px 10px; border-bottom: 2px solid transparent; }
+  nav a.tab:hover { color: #fff; border-bottom-color: var(--accent); }
+
+  /* 걷는 캐릭터: player_walk.png 는 32px 프레임 4장 */
+  .walker {
+    background: url(assets/sprites/player/player_walk.png) 0 0 / 400% 100%;
+    image-rendering: pixelated;
+    animation: walk 0.6s steps(4) infinite;
+  }
+  @keyframes walk { to { background-position: -400% 0; } }
+
+  /* 첫 화면 */
+  .hero {
+    position: relative; overflow: hidden;
+    border-bottom: 4px solid var(--panel-2);
+    background: url(assets/sprites/tiles/forest_grass.png) 0 0 / 192px;
+    image-rendering: pixelated;
+  }
+  .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(#181425cc, #181425ee 70%, var(--bg)); }
+  .hero .wrap { position: relative; padding-block: 64px 56px; text-align: center; }
+  .hero h1 { margin: 0; font-size: clamp(38px, 9vw, 72px); line-height: 1.1; color: var(--title); text-shadow: 0 4px 0 #000, 0 0 24px #feae3440; letter-spacing: 1px; }
+  .hero .tag { margin: 14px auto 0; max-width: 560px; color: var(--text); font-size: 17px; }
+  .hero .stage { display: flex; justify-content: center; align-items: flex-end; gap: 18px; margin: 36px 0 30px; height: 140px; }
+  .hero .stage .walker { width: 112px; height: 112px; filter: drop-shadow(0 6px 0 #0008); }
+  .hero .stage .vs { color: var(--bad); font-size: 22px; align-self: center; text-shadow: 0 2px 0 #000; }
+  .hero .stage img { width: 140px; height: 140px; filter: drop-shadow(0 6px 0 #0008); animation: breathe 1.4s ease-in-out infinite; transform-origin: bottom; }
+  @keyframes breathe { 50% { transform: scale(0.97, 1.04); } }
+  .hero .meta { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: 20px Galmuri11Bold, Galmuri11, monospace;
+    color: #181425; background: var(--gold); text-decoration: none;
+    padding: 14px 40px; border: 4px solid #ffd27a; box-shadow: 0 4px 0 #b86f1c;
+  }
+  .cta:hover { background: #ffc35c; }
+  .cta:active { transform: translateY(2px); box-shadow: 0 2px 0 #b86f1c; }
+
+  section { padding: 56px 0 8px; }
+  .section-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 18px; font-size: 26px; color: var(--title); text-shadow: 0 2px 0 #000; }
+  .section-title small { font: 13px Galmuri11, monospace; color: var(--muted); text-shadow: none; }
+
+  .card { background: var(--panel); border: 2px solid var(--panel-2); padding: 14px 16px; }
+
+  /* 특징 */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .feature { display: flex; gap: 12px; align-items: flex-start; }
+  .feature .icon { width: 48px; height: 48px; flex: none; display: grid; place-items: center; background: #0006; border: 2px solid var(--panel-2); }
+  .feature .icon img { width: 40px; height: 40px; }
+  .feature h3 { margin: 0 0 2px; font-size: 16px; color: #fff; }
+  .feature p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  /* 루프 */
+  .loop { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; counter-reset: step; margin-top: 10px; }
+  .loop .card { position: relative; padding-top: 30px; }
+  .loop .card::before { counter-increment: step; content: counter(step); position: absolute; top: -2px; left: -2px; background: var(--accent); color: var(--bg); width: 26px; height: 26px; display: grid; place-items: center; font-family: Galmuri11Bold, monospace; }
+  .loop b { color: #fff; font-weight: normal; font-family: Galmuri11Bold, monospace; }
+  .loop p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+
+  /* 맵 */
+  .maps { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .map { position: relative; border: 2px solid var(--panel-2); overflow: hidden; min-height: 190px; display: flex; flex-direction: column; justify-content: flex-end; background-size: 96px; image-rendering: pixelated; }
+  .map::before { content: ''; position: absolute; inset: 0; background: linear-gradient(#18142520, #181425f2 62%); }
+  .map > * { position: relative; }
+  .map img { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 96px; height: 96px; filter: drop-shadow(0 4px 0 #000a); }
+  .map .info { padding: 10px 12px; }
+  .map .no { font-size: 12px; color: var(--muted); }
+  .map h3 { margin: 0; font-size: 16px; color: #fff; }
+  .map .lv { font-size: 12px; color: var(--accent); }
+  .map:hover { border-color: var(--accent); }
+  .map.locked { background: repeating-linear-gradient(45deg, #1d1a2e 0 8px, #211e34 8px 16px); }
+  .map.locked::before { background: none; }
+  .map.locked .lock { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 72px; height: 72px; display: grid; place-items: center; border: 2px dashed var(--line); color: var(--line); font: 40px Galmuri11Bold, monospace; }
+  .map.locked h3, .map.locked .lv { color: var(--muted); }
+  .map.locked:hover { border-color: var(--panel-2); }
+  .map.new::after { content: 'NEW'; position: absolute; top: 8px; right: 8px; background: var(--bad); color: #fff; font: 11px Galmuri11Bold, monospace; padding: 1px 6px; }
+
+  /* 축복 */
+  .blessings { display: flex; flex-wrap: wrap; gap: 6px; }
+  .blessings span { border: 2px solid var(--panel-2); background: var(--panel); padding: 3px 10px; font-size: 13px; }
+  .blessings span:nth-child(3n+1) { border-color: #feae3480; }
+  .blessings span:nth-child(3n+2) { border-color: #b55cff80; }
+  .blessings span:nth-child(3n) { border-color: #2ce8f580; }
+
+  /* 다운로드 */
+  .dl-latest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .dl { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+  .dl:hover { border-color: var(--accent); }
+  .dl .plat { width: 44px; height: 44px; flex: none; display: grid; place-items: center; background: #0006; font-size: 22px; }
+  .dl b { display: block; color: #fff; font-weight: normal; font-family: Galmuri11Bold, monospace; }
+  .dl small { color: var(--muted); font-size: 12px; }
+  .dl .arrow { margin-left: auto; color: var(--gold); font-size: 20px; }
+  .dl.missing { opacity: 0.45; pointer-events: none; }
+  .dl.offline .arrow { color: var(--muted); font-size: 12px; }
+  .files span.file { color: var(--text); background: var(--panel-2); border: 2px solid var(--line); padding: 4px 10px; font-size: 13px; }
+  .files span.file small { color: var(--muted); margin-left: 4px; }
+
+  .hint { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
+  .hint li { margin: 2px 0; }
+
+  /* 릴리즈 노트 + 버전별 다운로드 */
+  .release { margin-bottom: 12px; }
+  .release header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 6px; }
+  .release .ver { font: 20px Galmuri11Bold, monospace; color: var(--title); }
+  .release .name { color: #fff; }
+  .release .date { color: var(--muted); font-size: 13px; margin-left: auto; }
+  .release .latest { background: var(--good); color: var(--bg); font: 11px Galmuri11Bold, monospace; padding: 1px 6px; }
+  .release ul { margin: 0 0 10px; padding-left: 20px; }
+  .release li { margin: 2px 0; }
+  .release li::marker { content: '▸ '; color: var(--accent); }
+  .files { display: flex; flex-wrap: wrap; gap: 6px; border-top: 2px dashed var(--panel-2); padding-top: 10px; }
+  .files a { color: #fff; text-decoration: none; background: var(--panel-2); border: 2px solid var(--line); padding: 4px 10px; font-size: 13px; }
+  .files a:hover { border-color: var(--accent); }
+  .files a small { color: var(--muted); margin-left: 4px; }
+  .files .none { color: var(--muted); font-size: 13px; }
+
+  footer { margin-top: 56px; padding: 24px 0 40px; border-top: 2px solid var(--panel-2); color: var(--muted); font-size: 12px; text-align: center; }
+
+  @media (max-width: 560px) {
+    nav a.tab { padding: 6px 6px; font-size: 13px; }
+    nav .logo span { display: none; }
+    .hero .stage .walker { width: 84px; height: 84px; }
+    .hero .stage img { width: 104px; height: 104px; }
+    .cta { width: 100%; padding: 14px 16px; }
+    .release .date { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .walker, .hero .stage img { animation: none; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="logo bold" href="#top"><div class="walker"></div><span>Endless Dungeon</span></a>
+    <a class="tab" href="#about">소개</a>
+    <a class="tab" href="#maps">맵</a>
+    <a class="tab" href="#download">다운로드</a>
+    <a class="tab" href="#releases">릴리즈</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1>Endless Dungeon</h1>
+    <p class="tag">걷기만 하면 싸운다. 끝없는 던전에서 레벨을 올리고,<br>잃지 않는 성장으로 다음 보스를 넘어라.</p>
+    <div class="stage">
+      <div class="walker" role="img" aria-label="주인공"></div>
+      <span class="vs bold">VS</span>
+      <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
+    </div>
+    <a class="cta" id="hero-cta" href="#download">▶ 무료 다운로드</a>
+    <div class="meta" id="hero-meta">Windows · Android</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="about">
+    <h2 class="section-title">게임 소개 <small>2D 도트 자동 전투 로그라이크</small></h2>
+    <div class="features">
+      <div class="card feature">
+        <div class="icon"><img class="px" src="assets/sprites/ui/icon_smash.png" alt=""></div>
+        <div><h3>자동 전투</h3><p>방향만 정하면 전투는 알아서. 스킬 순서와 장비를 고르는 게 실력이다.</p></div>
+      </div>
+      <div class="card feature">
+        <div class="icon"><img class="px" src="assets/sprites/ui/icon_star_fragment.png" alt=""></div>
+        <div><h3>폭발하는 축복</h3><p>출정과 보스 처치마다 셋 중 하나. 경험치 7배, 공격력 8배 같은 한 판의 운.</p></div>
+      </div>
+      <div class="card feature">
+        <div class="icon"><img class="px" src="assets/sprites/ui/icon_golden_cog.png" alt=""></div>
+        <div><h3>잃지 않는 성장</h3><p>세션이 끝나도 골드·유물·도감은 남는다. 강화가 쌓일수록 더 깊이 간다.</p></div>
+      </div>
+      <div class="card feature">
+        <div class="icon"><img class="px" src="assets/sprites/ui/icon_silver_fang.png" alt=""></div>
+        <div><h3>맵 10개, Lv 300,000</h3><p>숲에서 세계의 끝까지. 몬스터 200여 종, 유물 50종, 맵마다 다른 칩튠 음악.</p></div>
+      </div>
+    </div>
+
+    <div class="loop">
+      <div class="card"><b>출정</b><p>매번 Lv 1 에서 시작해 축복 하나를 고른다.</p></div>
+      <div class="card"><b>탐험·전투</b><p>걸을수록 몬스터를 만나고 레벨이 오른다. 깊은 구역일수록 위험하다.</p></div>
+      <div class="card"><b>보스</b><p>구역 끝의 보스를 쓰러뜨리면 다음 맵이 열린다.</p></div>
+      <div class="card"><b>귀환·강화</b><p>기력이 다하거나 쓰러져도 전리품은 남는다. 로비에서 영구 강화.</p></div>
+    </div>
+
+    <h3 class="section-title" style="font-size:18px;margin-top:28px">축복 <small>세션 동안만, 최대 5레벨</small></h3>
+    <div class="blessings">
+      <span>거인의 힘</span><span>불굴의 육체</span><span>철벽</span><span>질풍</span><span>현자의 축복</span><span>황금 손</span>
+      <span>끝없는 길</span><span>사냥꾼의 눈</span><span>시간 가속</span><span>행운의 별</span><span>승자의 만찬</span><span>불사조</span>
+    </div>
+  </section>
+
+  <section id="maps">
+    <h2 class="section-title">맵 <small>왼쪽 입구에서 오른쪽 보스까지</small></h2>
+    <div class="maps" id="map-list"></div>
+  </section>
+
+  <section id="download">
+    <h2 class="section-title">다운로드 <small id="dl-version"></small></h2>
+    <div class="dl-latest" id="dl-latest"></div>
+    <ul class="hint">
+      <li><b class="bold" style="color:#fff">설치형</b>: 설치 후 시작 메뉴에서 실행. <b class="bold" style="color:#fff">포터블</b>: 받은 파일을 바로 실행.</li>
+      <li>Windows 에서 "PC 보호" 창이 뜨면 <b class="bold">추가 정보 → 실행</b>을 누른다 (서명되지 않은 테스트 빌드).</li>
+      <li>Android 는 APK 를 받아 설치한다. 처음이면 "출처를 알 수 없는 앱 설치"를 허용해야 한다.</li>
+      <li>세이브는 기기에 저장된다. 새 버전을 설치해도 이어서 할 수 있다.</li>
+    </ul>
+  </section>
+
+  <section id="releases">
+    <h2 class="section-title">릴리즈 노트 <small>버전별 다운로드</small></h2>
+    <div id="release-list"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Endless Dungeon · 폰트 <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL)</div>
+</footer>
+
+<!-- npm run site 가 releases.json 과 파일 크기를 채운다 -->
+<script id="release-data" type="application/json">[{"version":"0.1.3","date":"2026-10-23","title":"세계의 끝까지","notes":["새 맵 5개: 6~10단계, Lv 300,000 까지","몬스터 105종, 유물 25종, 맵마다 새 배경음","전투 중 나와 몬스터의 HP 를 숫자로 표시","스킬 강화 시 현재 수치와 다음 레벨 수치를 표시","강화 설명을 '현재 +30% · 강화당 +3%' 처럼 알기 쉽게 정리","깊은 맵 난이도 조정: 일반 몬스터는 완만하게, 보스는 맵마다 조금씩 더 강하게"],"files":{"setup":121387834,"portable":121164161,"apk":8051966}},{"version":"0.1.2","date":"2026-10-23","title":"더 깊은 곳으로","notes":["새 맵 3개: 얼어붙은 협곡 외 2개 (3~5단계)","레벨 리디자인: 맵 다섯 개에 Lv 1 ~ 5,000, 레벨 숫자를 단위 없이 모두 표시","레벨 상한 없음: 보스 전에 마지막 구역에서 더 키워서 넘어갈 수 있음 (높아질수록 경험치가 줄어듦)","영구 강화를 완만하게, 축복은 그대로 강하게","전투 이펙트: 스킬마다 다른 베기·폭발·회복·방어 연출, 치명타 번쩍임","캐릭터 숨쉬기 모션, 전투 남은 시간 표시","무승부 연출 수정: 실제로 주고받은 공격이 그대로 보임","어디서나 보스에 도전하는 버튼, Android 지원"],"files":{"setup":120085256,"portable":119861584,"apk":6704638}},{"version":"0.1.1","date":"2026-10-22","title":"첫 모험","notes":["잊혀진 숲, 버려진 광산 두 맵과 보스","자동 전투, 세션 레벨업, 로비 영구 성장 (강화·스킬·유물·도감)","축복: 출정과 보스 처치마다 강력한 효과 셋 중 하나를 고르고 최대 5레벨까지 강화","보물상자, 치유의 샘, 업적","칩튠 배경음과 효과음, 음량 설정","Windows 실행 파일"],"files":{"setup":120079959,"portable":119856292,"apk":6721794}}]</script>
+<!-- 설치 파일을 함께 올리지 않는 배포 (Claude 아티팩트 등) 에서는 false: 다운로드 칸에 파일·크기만 보여 준다 -->
+<script>window.HAS_DOWNLOADS = true;
+  // 설치 파일 주소. {v} 버전, {file} 파일 이름 (GitHub Releases 배포는 npm run site -- --pages 가 바꾼다)
+  window.DOWNLOAD_URL = 'https://github.com/lsadi0710/endless-dungeon-releases/releases/download/v{v}/{file}';</script>
+<script>
+  const MAPS = [
+    ['잊혀진 숲', '모험이 시작되는 오래된 숲.', 1, 100, 'forest_guardian', 'forest_grass'],
+    ['버려진 광산', '광부들이 떠난 뒤 괴물들이 차지한 광산.', 100, 400, 'vein_lord', 'mine_floor'],
+    ['얼어붙은 협곡', '모든 것이 얼어붙은 깊은 협곡.', 400, 1000, 'frost_wyrm', 'canyon_snow'],
+  ];
+  /** 4단계부터는 이름·보스를 숨기고 잠긴 카드로만 보여 준다 (스포일러 방지) */
+  const HIDDEN_MAPS = 7;
+  const FILES = [
+    ['setup', 'Windows 설치형', '🪟', (v) => `EndlessDungeon-${v}-setup.exe`],
+    ['portable', 'Windows 포터블', '🪟', (v) => `EndlessDungeon-${v}-portable.exe`],
+    ['apk', 'Android APK', '🤖', (v) => `EndlessDungeon-${v}.apk`],
+  ];
+  const fmt = (n) => n.toLocaleString('en-US');
+  const dlUrl = (v, file) => DOWNLOAD_URL.replace('{v}', v).replace('{file}', file);
+  const size = (b) => (b >= 1048576 ? `${(b / 1048576).toFixed(0)} MB` : `${(b / 1024).toFixed(0)} KB`);
+  const el = (tag, attrs = {}, ...kids) => {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) k === 'class' ? (e.className = v) : e.setAttribute(k, v);
+    for (const k of kids) if (k != null) e.append(k);
+    return e;
+  };
+
+  // 맵 카드
+  const mapList = document.getElementById('map-list');
+  MAPS.forEach(([name, desc, min, max, boss, tile, isNew], i) => {
+    mapList.append(el('div', { class: `map${isNew ? ' new' : ''}`, style: `background-image:url(assets/sprites/tiles/${tile}.png)`, title: desc },
+      el('img', { class: 'px', src: `assets/sprites/monsters/${boss}.png`, alt: '' }),
+      el('div', { class: 'info' }, el('div', { class: 'no' }, `${i + 1}단계`), el('h3', {}, name), el('div', { class: 'lv' }, `Lv ${fmt(min)} – ${fmt(max)}`))));
+  });
+  for (let i = 0; i < HIDDEN_MAPS; i++) {
+    mapList.append(el('div', { class: 'map locked' },
+      el('div', { class: 'lock' }, '?'),
+      el('div', { class: 'info' }, el('div', { class: 'no' }, `${MAPS.length + i + 1}단계`), el('h3', {}, '???'), el('div', { class: 'lv' }, '직접 확인하세요'))));
+  }
+
+  // 히어로 보스: 맵 보스를 돌아가며
+  let bi = 0;
+  const heroBoss = document.getElementById('hero-boss');
+  setInterval(() => {
+    bi = (bi + 1) % MAPS.length;
+    heroBoss.src = `assets/sprites/monsters/${MAPS[bi][4]}.png`;
+    heroBoss.alt = MAPS[bi][0];
+  }, 2600);
+
+  // 릴리즈
+  let releases = [];
+  try { releases = JSON.parse(document.getElementById('release-data').textContent); } catch { /* 빌드 전 */ }
+  const fileLink = (r, [key, label, , name]) => {
+    const f = r.files?.[key];
+    if (!f) return null;
+    return HAS_DOWNLOADS
+      ? el('a', { href: dlUrl(r.version, name(r.version)), download: '' }, label, el('small', {}, size(f)))
+      : el('span', { class: 'file' }, label, el('small', {}, size(f)));
+  };
+  const latest = releases[0];
+  const dlLatest = document.getElementById('dl-latest');
+  if (latest) {
+    document.getElementById('dl-version').textContent = `최신 v${latest.version} · ${latest.date}`;
+    document.getElementById('hero-meta').textContent = `v${latest.version} · Windows · Android`;
+    for (const [key, label, icon, name] of FILES) {
+      const f = latest.files?.[key];
+      const link = f && HAS_DOWNLOADS;
+      dlLatest.append(el(link ? 'a' : 'div', { class: `card dl${f ? '' : ' missing'}${f && !link ? ' offline' : ''}`, ...(link ? { href: dlUrl(latest.version, name(latest.version)), download: '' } : {}) },
+        el('div', { class: 'plat' }, icon),
+        el('div', {}, el('b', {}, label), el('small', {}, f ? `${name(latest.version)} · ${size(f)}` : '준비 중')),
+        el('span', { class: 'arrow' }, link ? '⬇' : '배포 준비 중')));
+    }
+  } else {
+    dlLatest.append(el('div', { class: 'card' }, '릴리즈 정보가 없습니다. npm run site 로 페이지를 만들어 주세요.'));
+  }
+  const list = document.getElementById('release-list');
+  releases.forEach((r, i) => {
+    const links = FILES.map((f) => fileLink(r, f)).filter(Boolean);
+    list.append(el('article', { class: 'card release', id: `v${r.version}` },
+      el('header', {}, el('span', { class: 'ver' }, `v${r.version}`), el('span', { class: 'name' }, r.title), i === 0 ? el('span', { class: 'latest' }, 'LATEST') : null, el('span', { class: 'date' }, r.date)),
+      el('ul', {}, ...r.notes.map((n) => el('li', {}, n))),
+      el('div', { class: 'files' }, ...(links.length ? links : [el('span', { class: 'none' }, '다운로드 파일 없음')]))));
+  });
+</script>
+</body>
+</html>
