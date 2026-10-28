@@ -136,6 +136,10 @@
   .dl small { color: var(--muted); font-size: 12px; }
   .dl .arrow { margin-left: auto; color: var(--gold); font-size: 20px; }
   #dl-android .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
+  /* 테스터 이벤트 (비공개 테스트 기간) */
+  .event { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 12px 16px; background: #1e3a2e; border: 2px solid var(--good); color: #fff; text-decoration: none; font-size: 14px; }
+  .event .cup { font-size: 26px; }
+  .event small { display: block; color: var(--text); font-size: 12px; }
   .dl.missing { opacity: 0.45; pointer-events: none; }
   .dl.offline .arrow { color: var(--muted); font-size: 12px; }
   .files span.file { color: var(--text); background: var(--panel-2); border: 2px solid var(--line); padding: 4px 10px; font-size: 13px; }
@@ -252,6 +256,11 @@
         <span class="arrow">준비 중</span>
       </div>
     </div>
+    <a class="event" href="test.html#event">
+      <span class="cup">☕</span>
+      <span><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
+        <small>자세히 보기 →</small></span>
+    </a>
     <h3 class="section-title" style="font-size:18px;margin-top:28px">세이브 옮기기 <small>무료 배포판을 쓰던 분</small></h3>
     <div class="dl-latest" id="dl-latest"></div>
     <ul class="hint">
