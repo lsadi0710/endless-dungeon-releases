@@ -202,7 +202,7 @@
       <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
     </div>
     <a class="cta" id="hero-cta" href="test.html">▶ 테스트 하러 가기</a>
-    <div class="meta" id="hero-meta">Android · Steam</div>
+    <div class="meta" id="hero-meta">Android · iOS · Steam</div>
   </div>
 </header>
 
@@ -253,6 +253,11 @@
       <div class="card dl offline" id="dl-steam">
         <div class="plat">🎮</div>
         <div><b>PC · Steam</b><small>Steam 출시 준비 중</small></div>
+        <span class="arrow">준비 중</span>
+      </div>
+      <div class="card dl offline" id="dl-ios">
+        <div class="plat">🍎</div>
+        <div><b>iPhone · App Store</b><small>App Store 출시 준비 중</small></div>
         <span class="arrow">준비 중</span>
       </div>
     </div>
@@ -342,7 +347,7 @@
   const latest = releases[0];
   const dlLatest = document.getElementById('dl-latest');
   if (latest) {
-    document.getElementById('hero-meta').textContent = 'Android 비공개 테스트 · Steam 준비 중';
+    document.getElementById('hero-meta').textContent = 'Android 비공개 테스트 · iOS·Steam 준비 중';
     for (const [key, label, icon, name] of FILES) {
       const f = latest.files?.[key];
       const link = f && HAS_DOWNLOADS;
