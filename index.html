@@ -148,30 +148,7 @@
   .event { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 12px 16px; background: #1e3a2e; border: 2px solid var(--good); color: #fff; text-decoration: none; font-size: 14px; }
   .event .cup { font-size: 26px; }
   .event small { display: block; color: var(--text); font-size: 12px; }
-  .dl.missing { opacity: 0.45; pointer-events: none; }
   .dl.offline .arrow { color: var(--muted); font-size: 12px; }
-  .files span.file { color: var(--text); background: var(--panel-2); border: 2px solid var(--line); padding: 4px 10px; font-size: 13px; }
-  .files span.file small { color: var(--muted); margin-left: 4px; }
-
-  .hint { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
-  .hint li { margin: 2px 0; }
-
-  /* 릴리즈 노트 (다운로드는 최신 버전만) */
-  .release { margin-bottom: 12px; }
-  .release header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 6px; }
-  .release .ver { font: 20px Galmuri11Bold, monospace; color: var(--title); }
-  .release .name { color: #fff; }
-  .release .date { color: var(--muted); font-size: 13px; margin-left: auto; }
-  .release .latest { background: var(--good); color: var(--bg); font: 11px Galmuri11Bold, monospace; padding: 1px 6px; }
-  .release .beta { background: var(--gold); color: var(--bg); font: 11px Galmuri11Bold, monospace; padding: 1px 6px; }
-  .release ul { margin: 0 0 10px; padding-left: 20px; }
-  .release li { margin: 2px 0; }
-  .release li::marker { content: '▸ '; color: var(--accent); }
-  .files { display: flex; flex-wrap: wrap; gap: 6px; border-top: 2px dashed var(--panel-2); padding-top: 10px; }
-  .files a { color: #fff; text-decoration: none; background: var(--panel-2); border: 2px solid var(--line); padding: 4px 10px; font-size: 13px; }
-  .files a:hover { border-color: var(--accent); }
-  .files a small { color: var(--muted); margin-left: 4px; }
-  .files .none { color: var(--muted); font-size: 13px; }
 
   footer { margin-top: 56px; padding: 24px 0 40px; border-top: 2px solid var(--panel-2); color: var(--muted); font-size: 12px; text-align: center; }
 
@@ -189,7 +166,6 @@
     .hero .stage .walker { width: 84px; height: 84px; }
     .hero .stage img { width: 104px; height: 104px; }
     .cta { width: 100%; padding: 14px 16px; }
-    .release .date { margin-left: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .walker, .hero .stage img { animation: none; }
@@ -205,7 +181,6 @@
       <a class="tab" href="#maps"><span lang="ko">맵</span><span lang="en">Maps</span></a>
       <a class="tab" href="test.html"><span lang="ko">테스트 참여</span><span lang="en">Join Test</span></a>
       <a class="tab" href="#download"><span lang="ko">다운로드</span><span lang="en">Download</span></a>
-      <a class="tab" href="#releases"><span lang="ko">릴리즈</span><span lang="en">Releases</span></a>
     </div>
     <div class="lang-switch" role="group" aria-label="언어 / Language">
       <button type="button" data-set-lang="ko">한국어</button>
@@ -224,7 +199,7 @@
       <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
     </div>
     <a class="cta" id="hero-cta" href="test.html"><span lang="ko">▶ 테스트 하러 가기</span><span lang="en">▶ Join the Test</span></a>
-    <div class="meta" id="hero-meta">Android · iOS · Steam</div>
+    <div class="meta"><span lang="ko">Android 비공개 테스트 · iOS·Steam 준비 중</span><span lang="en">Android closed test · iOS and Steam coming soon</span></div>
   </div>
 </header>
 
@@ -293,26 +268,6 @@
       <span><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
         <small>자세히 보기 →</small></span>
     </a>
-    <h3 class="section-title" style="font-size:18px;margin-top:28px"><span lang="ko">세이브 옮기기</span><span lang="en">Move Your Save</span> <small lang="ko">무료 배포판을 쓰던 분</small><small lang="en">For players of the free version</small></h3>
-    <div class="dl-latest" id="dl-latest"></div>
-    <ul class="hint" lang="ko">
-      <li>무료 배포판은 끝났습니다. 이 APK 는 게임을 할 수 없고, 기기에 남은 세이브를 <b class="bold" style="color:#fff">세이브 코드</b>로 내보내는 기능만 있습니다.</li>
-      <li>기존 무료판(Android) 위에 설치하고 열면 세이브 코드가 나옵니다. 복사해서 Google Play 정식판의 <b class="bold">설정 → 세이브 → 불러오기</b>에 붙여 넣으세요.</li>
-      <li>처음이면 "출처를 알 수 없는 앱 설치"를 허용해야 합니다.</li>
-      <li>PC 무료판은 더 이상 내려받을 수 없습니다. 1.0.1 을 설치했다면 로비의 <b class="bold">설정 → 세이브 → 내보내기</b>로 코드를 만들 수 있습니다.</li>
-    </ul>
-    <ul class="hint" lang="en">
-      <li>The free version has ended. This APK can't run the game. It only exports the save left on your device as a <b class="bold" style="color:#fff">save code</b>.</li>
-      <li>Install it over your existing free version (Android) and open it to get a save code. Copy the code and paste it into <b class="bold">Settings → Save Data → Import</b> in the Google Play version.</li>
-      <li>If this is your first time, you'll need to allow installing apps from unknown sources.</li>
-      <li>The free PC version can no longer be downloaded. If you have 1.0.1 installed, you can make a code from <b class="bold">Settings → Save Data → Export</b> in the lobby.</li>
-    </ul>
-  </section>
-
-  <section id="releases">
-    <h2 class="section-title"><span lang="ko">릴리즈 노트</span><span lang="en">Release Notes</span> <small lang="ko">이전 버전은 노트만 (다운로드 종료)</small><small lang="en">Notes only for older versions (downloads closed)</small></h2>
-    <p class="hint" id="notes-ko-only" lang="en" hidden>Some release notes are only available in Korean for now.</p>
-    <div id="release-list"></div>
   </section>
 </main>
 
@@ -320,12 +275,6 @@
   <div class="wrap">Enlevel Dungeon · <span lang="ko">폰트</span><span lang="en">Font</span> <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL) · <a lang="ko" href="privacy.html">개인정보처리방침</a><a lang="en" href="privacy-en.html">Privacy Policy</a></div>
 </footer>
 
-<!-- npm run site 가 releases.json 과 파일 크기를 채운다 -->
-<script id="release-data" type="application/json">[{"version":"1.0.2","date":"2026-10-28","title":"세이브 이전 전용 (마지막 무료 배포판)","notes":["무료 배포판은 이 버전으로 끝난다. 게임은 할 수 없고, 기기에 남은 세이브를 세이브 코드로 내보내는 기능만 있다","기존 무료판(Android) 위에 설치하고 열면 바로 세이브 코드가 나온다. 복사해서 Google Play 정식판의 설정 → 세이브 → 불러오기에 붙여 넣는다","끝나지 않은 출정이 남아 있으면 획득물까지 정리한 뒤 코드를 만든다","PC 판 다운로드 종료. PC 는 Steam 판을 준비 중이다"],"en":{"title":"Save Transfer Only (Last Free Version)","notes":["The free version ends with this release. It can't run the game. It only exports the save left on your device as a save code","Install it over your existing free version (Android) and open it to see your save code. Copy the code and paste it into Settings → Save Data → Import in the Google Play version","If a run is still unfinished, its loot is settled before the code is made","PC downloads have ended. A Steam version is in the works"]},"files":{"apk":7752549}},{"version":"1.0.1","date":"2026-10-28","title":"세이브 옮기기","beta":true,"notes":["세이브 내보내기·불러오기: 로비의 설정 → 세이브에서 세이브 코드를 복사해 다른 기기나 앱(PC·Android)으로 진행을 옮기거나 백업할 수 있다","세이브 코드는 암호화되어 있어 내용을 고치거나 일부만 복사하면 불러올 수 없다","불러오기 전의 세이브는 기기 안에 따로 한 벌 남겨 둔다"],"en":{"title":"Move Your Save","notes":["Save export and import: copy a save code from Settings → Save Data in the lobby to move or back up your progress across devices and apps (PC and Android)","Save codes are encrypted, so a code that was edited or only partly copied can't be imported","A copy of your save from before the import is kept on the device"]},"files":{}},{"version":"1.0.0","date":"2026-10-27","title":"베타 출시","beta":true,"notes":["첫 베타 출시. 이번 버전부터 이전 버전 설치 파일은 내려받을 수 없다 (릴리즈 노트만 남김)","영어 지원: 기기 언어가 한국어가 아니면 영어로 시작, 설정 → 언어에서 바꿀 수 있다","세이브는 그대로 이어진다"],"en":{"title":"Beta Launch","notes":["First beta release. From this version on, installers for older versions can't be downloaded (release notes stay)","English support: the game starts in English if your device language isn't Korean. You can change it in Settings → Language","Your save carries over"]},"files":{}},{"version":"0.2.1","date":"2026-10-27","title":"균형 맞추기","notes":["축복 조정: 너무 강하거나 약하던 축복 효과를 다듬음","쓰임새가 적던 축복 하나 삭제","보스 난이도 순서 정리: 뒤 맵 보스일수록 강하도록 맞춤","수정: 이동과 전투 연출이 가끔 잠깐 빨라지던 문제 (프레임 상한 계산 오류)"],"en":{"title":"Balance Pass","notes":["Blessing tuning: adjusted effects that were too strong or too weak","Removed one rarely used Blessing","Boss difficulty order fixed: bosses on later maps are now stronger","Fix: movement and battle animations sometimes sped up for a moment (frame cap miscalculation)"]},"files":{}},{"version":"0.2.0","date":"2026-10-26","title":"각성","notes":["스킬 각성: 기본 스킬을 끝까지 올리고 맵 보스를 잡으면 각성, 각성한 스킬은 다시 성장","후반 성장 요소 확장, 강화 확률 상향","무기 강화 개편: 돌파 구간 없이 매 레벨 강화, 고정 공격력 + % 공격력. 많이 강화하면 앞 맵을 빠르게 지나간다","강화석 하나로 통합, 뒤 맵일수록 많이 떨어짐 (가지고 있던 맵별 강화석은 합쳐짐)","업적 세분화, 진행에 맞는 보상, 모두 받기 버튼","스탯 강화 버튼을 꾹 누르면 연속 강화","각성 스킬 이펙트 강화","설정 팝업, 절전 모드 (30fps). 로비·결과 화면에서는 화면 갱신을 멈춰 발열 감소","휴대폰 최적화: 글자·버튼 크기, 화면 전환 중 멈춤 가림, 도감 맵별 접기, 피해 숫자가 많이 떠도 끊김 없이","휴대폰 프레임 개선: 최신 폰 (120Hz) 에서 탐험·전투가 30fps 안팎이던 것을 60fps 로. 미니맵을 가벼운 지도 그림으로 바꾸고 그리기 순서를 정리해 발열도 줄임","수정: 보스 공터 위아래 안전지대에서 기력이 줄던 문제, 누른 채 다른 앱에 갔다 오면 캐릭터가 저절로 걷던 문제"],"en":{"title":"Awakening","notes":["Skill Awakening: max out a base skill and defeat a map boss to awaken it. Awakened skills grow again","More late-game growth, higher upgrade odds","Weapon upgrade rework: upgrade at every level with no breakthrough tiers, for flat attack plus % attack. A heavily upgraded weapon clears early maps quickly","Upgrade Stones merged into one type, with more dropping on later maps (map-specific stones you had were combined)","Achievements split into finer steps, rewards that match your progress, and a Claim All button","Hold the stat upgrade button to upgrade repeatedly","Stronger effects for awakened skills","Settings popup, Power Saving mode (30fps). The screen stops redrawing in the lobby and result screens to reduce heat","Phone optimization: text and button sizes, stutter hidden during screen transitions, bestiary folds by map, no hitching when many damage numbers appear","Better frame rate on phones: exploring and battles on recent 120Hz phones went from around 30fps to 60fps. The minimap is now a lightweight image and the drawing order was cleaned up, which also reduces heat","Fixes: Stamina draining in the safe areas above and below the boss clearing, and the character walking on its own after you switched apps while holding"]},"files":{}},{"version":"0.1.5","date":"2026-10-26","title":"끝까지 간 사람에게","notes":["모든 맵을 정복한 뒤의 새 성장 요소","어려움·지옥에서 보스 돌파석이 더 많이 나옴","탱커형 준보스가 맵 보스보다 단단하던 문제 수정","준보스는 이제 그 맵 보스보다 항상 약하다 (HP 절반 이하)"],"en":{"title":"For Those Who Went All the Way","notes":["New growth after conquering every map","More Breakthrough Stones on Hard and Hell","Fixed tank-type Elites being tougher than the map boss","Elites are now always weaker than that map's boss (half its HP or less)"]},"files":{}},{"version":"0.1.4","date":"2026-10-25","title":"강화와 탐험","notes":["장비 창: 무기를 강화하면 단계마다 새 무기. 강화석과 골드로 강화하고, 실패할수록 다음 확률이 오른다","강화석: 그 맵 몬스터가 떨어뜨리고, 구역 준보스와 보스는 훨씬 많이. 구간 돌파는 보스 돌파석","무기 단계마다 캐릭터 빛 이펙트와 기본 공격 이펙트가 바뀜","구역 준보스: 길 위에 버티고 선 강적, 피해 가거나 잡거나","탐험 안개: 가 본 곳만 보이고, 보물상자 자리는 출정마다 바뀜","출정 난이도: 보통 / 어려움 / 지옥, 어려울수록 드롭이 많다","축복 다시 뽑기 (선택마다 한 번)","정보창이 맵을 가리지 않게 위쪽으로 분리, 화면 번쩍임 제거","뒤쪽 맵 난이도 상향, 단계마다 더 가파르게"],"en":{"title":"Upgrades and Exploration","notes":["Gear tab: each weapon upgrade tier gives you a new weapon. Upgrade with Upgrade Stones and Gold, and each failure raises your next chance","Upgrade Stones: dropped by monsters on that map, and far more by zone Elites and bosses. Breakthrough Stones get you past tiers","Each weapon tier changes your character's glow and basic attack effect","Zone Elites: tough foes standing on the path. Go around them or take them down","Exploration fog: you only see where you've been, and chest locations change every run","Embark difficulty: Normal / Hard / Hell. Harder means more drops","Blessing Reroll (once per choice)","Info panel moved up so it doesn't cover the map, screen flash removed","Later maps made harder, with steeper jumps per stage"]},"files":{}},{"version":"0.1.3","date":"2026-10-23","title":"더 먼 곳으로","notes":["새 맵 추가, 새 몬스터와 유물, 맵마다 새 배경음","전투 중 나와 몬스터의 HP 를 숫자로 표시","스킬 강화 시 현재 수치와 다음 레벨 수치를 표시","강화 설명을 '현재 +30% · 강화당 +3%' 처럼 알기 쉽게 정리","깊은 맵 난이도 조정: 일반 몬스터는 완만하게, 보스는 맵마다 조금씩 더 강하게"],"en":{"title":"Further Out","notes":["New maps, new monsters and relics, new music for each map","Your HP and the monster's HP now show as numbers in battle","Skill upgrades now show current and next-level values","Clearer upgrade descriptions, such as 'Now +30% · +3% per upgrade'","Deep map difficulty tuned: regular monsters ramp up gently, bosses get a little stronger each map"]},"files":{}},{"version":"0.1.2","date":"2026-10-23","title":"더 깊은 곳으로","notes":["새 맵: 얼어붙은 협곡 외","레벨 리디자인: 레벨 숫자를 단위 없이 모두 표시","레벨 상한 없음: 보스 전에 마지막 구역에서 더 키워서 넘어갈 수 있음 (높아질수록 경험치가 줄어듦)","영구 강화를 완만하게, 축복은 그대로 강하게","전투 이펙트: 스킬마다 다른 베기·폭발·회복·방어 연출, 치명타 번쩍임","캐릭터 숨쉬기 모션, 전투 남은 시간 표시","무승부 연출 수정: 실제로 주고받은 공격이 그대로 보임","어디서나 보스에 도전하는 버튼, Android 지원"],"en":{"title":"Going Deeper","notes":["New maps: Frozen Canyon and more","Level redesign: level numbers are shown in full, with no unit abbreviations","No level cap: you can grow further in the last zone before taking on the boss (EXP drops as you climb)","Permanent upgrades made gentler, Blessings stay as strong","Battle effects: distinct slash, explosion, heal and guard effects per skill, plus crit flashes","Character breathing animation, battle time remaining display","Draw animation fixed: it now shows the attacks actually traded","Boss challenge button available anywhere, Android support"]},"files":{}},{"version":"0.1.1","date":"2026-10-22","title":"첫 모험","notes":["잊혀진 숲, 버려진 광산 두 맵과 보스","자동 전투, 세션 레벨업, 로비 영구 성장 (강화·스킬·유물·도감)","축복: 출정과 보스 처치마다 강력한 효과 셋 중 하나를 고르고 강화","보물상자, 치유의 샘, 업적","칩튠 배경음과 효과음, 음량 설정","Windows 실행 파일"],"en":{"title":"First Adventure","notes":["Two maps with bosses: Forgotten Forest and Abandoned Mine","Auto battle, in-run level-ups, permanent growth in the lobby (upgrades, skills, relics, bestiary)","Blessings: pick one of three powerful effects when you embark and each time you defeat a boss, and upgrade them","Chests, Healing Springs, achievements","Chiptune music and sound effects, volume settings","Windows executable"]},"files":{}}]</script>
-<!-- 설치 파일을 함께 올리지 않는 배포 (Claude 아티팩트 등) 에서는 false: 다운로드 칸에 파일·크기만 보여 준다 -->
-<script>window.HAS_DOWNLOADS = true;
-  // 설치 파일 주소. {v} 버전, {file} 파일 이름 (GitHub Releases 배포는 npm run site -- --pages 가 바꾼다)
-  window.DOWNLOAD_URL = 'https://github.com/lsadi0710/endless-dungeon-releases/releases/download/v{v}/{file}';</script>
 <script>
   // 이름·설명, 레벨, 보스, 바닥 타일, 영어 이름·설명 (영어는 게임 번역 src/i18n/en/maps.ts 와 같게)
   const MAPS = [
@@ -334,15 +283,8 @@
     ['얼어붙은 협곡', '모든 것이 얼어붙은 깊은 협곡.', 400, 1000, 'frost_wyrm', 'canyon_snow', 'Frozen Canyon', 'A deep canyon where everything is frozen.'],
   ];
   /** 4단계부터는 맵 수·이름·보스를 숨기고 잠긴 카드 하나로만 보여 준다 (스포일러 방지) */
-  // 1.0.2 부터 내려받을 수 있는 건 세이브 이전용 APK 뿐 (PC 판 다운로드 종료, 게임은 Google Play·Steam)
-  const FILES = [
-    // 1.0.2 는 이름 변경 전에 배포한 파일 이름 그대로
-    ['apk', ['세이브 이전용 APK', 'Save Transfer APK'], '💾', (v) => (v === '1.0.2' ? `EndlessDungeon-${v}.apk` : `EnlevelDungeon-${v}.apk`)],
-  ];
   const fmt = (n) => n.toLocaleString('en-US');
-  const dlUrl = (v, file) => DOWNLOAD_URL.replace('{v}', v).replace('{file}', file);
-  const size = (b) => (b >= 1048576 ? `${(b / 1048576).toFixed(0)} MB` : `${(b / 1024).toFixed(0)} KB`);
-  const el = (tag, attrs = {}, ...kids) => {
+  const el =(tag, attrs = {}, ...kids) => {
     const e = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs)) k === 'class' ? (e.className = v) : e.setAttribute(k, v);
     for (const k of kids) if (k != null) e.append(k);
@@ -385,43 +327,6 @@
   }, 2600);
   applyAttrs();
   document.addEventListener('langchange', applyAttrs);
-
-  // 릴리즈
-  let releases = [];
-  try { releases = JSON.parse(document.getElementById('release-data').textContent); } catch { /* 빌드 전 */ }
-  const fileLink = (r, [key, [label, labelEn], , name]) => {
-    const f = r.files?.[key];
-    if (!f) return null;
-    return HAS_DOWNLOADS
-      ? el('a', { href: dlUrl(r.version, name(r.version)), download: '' }, pair(label, labelEn), el('small', {}, size(f)))
-      : el('span', { class: 'file' }, pair(label, labelEn), el('small', {}, size(f)));
-  };
-  const latest = releases[0];
-  const dlLatest = document.getElementById('dl-latest');
-  if (latest) {
-    document.getElementById('hero-meta').replaceChildren(pair('Android 비공개 테스트 · iOS·Steam 준비 중', 'Android closed test · iOS and Steam coming soon'));
-    for (const [key, [label, labelEn], icon, name] of FILES) {
-      const f = latest.files?.[key];
-      const link = f && HAS_DOWNLOADS;
-      dlLatest.append(el(link ? 'a' : 'div', { class: `card dl${f ? '' : ' missing'}${f && !link ? ' offline' : ''}`, ...(link ? { href: dlUrl(latest.version, name(latest.version)), download: '' } : {}) },
-        el('div', { class: 'plat' }, icon),
-        el('div', {}, el('b', {}, pair(label, labelEn)), el('small', {}, f ? `${name(latest.version)} · ${size(f)}` : pair('준비 중', 'Coming soon'))),
-        el('span', { class: 'arrow' }, link ? '⬇' : pair('배포 준비 중', 'Coming soon'))));
-    }
-  } else {
-    dlLatest.append(el('div', { class: 'card' }, pair('릴리즈 정보가 없습니다. npm run site 로 페이지를 만들어 주세요.', 'No release info. Build the page with npm run site.')));
-  }
-  // 영어 노트 (releases.json 의 en) 가 없는 버전은 영어 화면에서도 한국어로 보여 주고 안내를 띄운다
-  document.getElementById('notes-ko-only').hidden = releases.every((r) => r.en);
-  const list = document.getElementById('release-list');
-  releases.forEach((r, i) => {
-    const links = FILES.map((f) => fileLink(r, f)).filter(Boolean);
-    list.append(el('article', { class: 'card release', id: `v${r.version}` },
-      el('header', {}, el('span', { class: 'ver' }, `v${r.version}`), el('span', { class: 'name' }, pair(r.title, r.en?.title ?? r.title)), i === 0 ? el('span', { class: 'latest' }, 'LATEST') : null, r.beta ? el('span', { class: 'beta' }, 'BETA') : null, el('span', { class: 'date' }, r.date)),
-      el('ul', {}, ...r.notes.map((n, j) => el('li', {}, pair(n, r.en?.notes[j] ?? n)))),
-      // 이전 버전은 다운로드를 닫았다 (노트만)
-      el('div', { class: 'files' }, ...(i > 0 ? [el('span', { class: 'none' }, pair('이전 버전은 다운로드할 수 없습니다', 'Older versions can no longer be downloaded'))] : links.length ? links : [el('span', { class: 'none' }, pair('다운로드 파일 없음', 'No download files'))]))));
-  });
 </script>
 </body>
 </html>
