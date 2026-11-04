@@ -1,12 +1,15 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-desc-en="A 2D pixel auto-battle roguelike. Walk a bottomless dungeon, level up, and beat the next boss with growth you never lose.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Enlevel Dungeon</title>
 <meta name="description" content="2D 도트 자동 전투 로그라이크. 끝없는 던전을 걸으며 레벨을 올리고, 영구 성장으로 다음 보스를 넘는다.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<script src="lang.js"></script>
 <style>
+  /* 한·영 전환 (lang.js): <html lang> 과 다른 쪽 글을 숨긴다 */
+  html[lang="ko"] body [lang="en"], html[lang="en"] body [lang="ko"] { display: none !important; }
   /* 게임 로비(src/ui/ui.css)와 같은 팔레트 */
   @font-face { font-family: Galmuri11; src: url(assets/fonts/Galmuri11.woff2) format('woff2'); font-display: swap; }
   @font-face { font-family: Galmuri11Bold; src: url(assets/fonts/Galmuri11-Bold.woff2) format('woff2'); font-display: swap; }
@@ -51,6 +54,11 @@
   nav .logo .walker { width: 32px; height: 32px; }
   nav a.tab { color: var(--muted); text-decoration: none; padding: 6px 10px; border-bottom: 2px solid transparent; }
   nav a.tab:hover { color: #fff; border-bottom-color: var(--accent); }
+  nav .tabs { display: flex; gap: 4px; }
+  .lang-switch { display: inline-flex; flex: none; margin-left: 8px; border: 2px solid var(--panel-2); }
+  .lang-switch button { padding: 4px 8px; border: 0; background: none; color: var(--muted); font: 13px Galmuri11Bold, Galmuri11, monospace; cursor: pointer; }
+  .lang-switch button:hover { color: #fff; }
+  html[lang="ko"] .lang-switch [data-set-lang="ko"], html[lang="en"] .lang-switch [data-set-lang="en"] { background: var(--panel-2); color: #fff; }
 
   /* 걷는 캐릭터: player_walk.png 는 32px 프레임 4장 */
   .walker {
@@ -88,7 +96,7 @@
   .cta:active { transform: translateY(2px); box-shadow: 0 2px 0 #b86f1c; }
 
   section { padding: 56px 0 8px; }
-  .section-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 18px; font-size: 26px; color: var(--title); text-shadow: 0 2px 0 #000; }
+  .section-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; margin: 0 0 18px; font-size: 26px; color: var(--title); text-shadow: 0 2px 0 #000; }
   .section-title small { font: 13px Galmuri11, monospace; color: var(--muted); text-shadow: none; }
 
   .card { background: var(--panel); border: 2px solid var(--panel-2); padding: 14px 16px; }
@@ -167,9 +175,17 @@
 
   footer { margin-top: 56px; padding: 24px 0 40px; border-top: 2px solid var(--panel-2); color: var(--muted); font-size: 12px; text-align: center; }
 
+  /* 영어 탭이 길어 좁은 화면에서는 메뉴를 두 줄로: 로고·언어 / 탭 */
+  @media (max-width: 720px) {
+    html { scroll-padding-top: 44px; }
+    nav .wrap { flex-wrap: wrap; height: auto; padding-block: 6px 2px; }
+    nav .tabs { order: 1; flex: 1 0 100%; justify-content: space-between; gap: 0; }
+    nav a.tab { padding: 6px 4px; font-size: 13px; white-space: nowrap; }
+  }
+  @media (max-width: 340px) {
+    nav a.tab { padding-inline: 2px; font-size: 12px; }
+  }
   @media (max-width: 560px) {
-    nav a.tab { padding: 6px 6px; font-size: 13px; }
-    nav .logo span { display: none; }
     .hero .stage .walker { width: 84px; height: 84px; }
     .hero .stage img { width: 104px; height: 104px; }
     .cta { width: 100%; padding: 14px 16px; }
@@ -184,106 +200,125 @@
 <nav>
   <div class="wrap">
     <a class="logo bold" href="#top"><div class="walker"></div><span>Enlevel Dungeon</span></a>
-    <a class="tab" href="#about">소개</a>
-    <a class="tab" href="#maps">맵</a>
-    <a class="tab" href="test.html">테스트 참여</a>
-    <a class="tab" href="#download">다운로드</a>
-    <a class="tab" href="#releases">릴리즈</a>
+    <div class="tabs">
+      <a class="tab" href="#about"><span lang="ko">소개</span><span lang="en">About</span></a>
+      <a class="tab" href="#maps"><span lang="ko">맵</span><span lang="en">Maps</span></a>
+      <a class="tab" href="test.html"><span lang="ko">테스트 참여</span><span lang="en">Join Test</span></a>
+      <a class="tab" href="#download"><span lang="ko">다운로드</span><span lang="en">Download</span></a>
+      <a class="tab" href="#releases"><span lang="ko">릴리즈</span><span lang="en">Releases</span></a>
+    </div>
+    <div class="lang-switch" role="group" aria-label="언어 / Language">
+      <button type="button" data-set-lang="ko">한국어</button>
+      <button type="button" data-set-lang="en" aria-label="English">EN</button>
+    </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="wrap">
     <h1>Enlevel Dungeon</h1>
-    <p class="tag">걷기만 하면 싸운다. 끝없는 던전에서 레벨을 올리고,<br>잃지 않는 성장으로 다음 보스를 넘어라.</p>
+    <p class="tag"><span lang="ko">걷기만 하면 싸운다. 끝없는 던전에서 레벨을 올리고,<br>잃지 않는 성장으로 다음 보스를 넘어라.</span><span lang="en">Just walk, and the fighting happens on its own.<br>Level up in a bottomless dungeon and beat the next boss with growth you never lose.</span></p>
     <div class="stage">
-      <div class="walker" role="img" aria-label="주인공"></div>
+      <div class="walker" id="hero-walker" role="img" aria-label="주인공"></div>
       <span class="vs bold">VS</span>
       <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
     </div>
-    <a class="cta" id="hero-cta" href="test.html">▶ 테스트 하러 가기</a>
+    <a class="cta" id="hero-cta" href="test.html"><span lang="ko">▶ 테스트 하러 가기</span><span lang="en">▶ Join the Test</span></a>
     <div class="meta" id="hero-meta">Android · iOS · Steam</div>
   </div>
 </header>
 
 <main class="wrap">
   <section id="about">
-    <h2 class="section-title">게임 소개 <small>2D 도트 자동 전투 로그라이크</small></h2>
+    <h2 class="section-title"><span lang="ko">게임 소개</span><span lang="en">About the Game</span> <small lang="ko">2D 도트 자동 전투 로그라이크</small><small lang="en">2D pixel auto-battle roguelike</small></h2>
     <div class="features">
       <div class="card feature">
         <div class="icon"><img class="px" src="assets/sprites/ui/icon_smash.png" alt=""></div>
-        <div><h3>자동 전투</h3><p>방향만 정하면 전투는 알아서. 스킬 순서와 장비를 고르는 게 실력이다.</p></div>
+        <div lang="ko"><h3>자동 전투</h3><p>방향만 정하면 전투는 알아서. 스킬 순서와 장비를 고르는 게 실력이다.</p></div>
+        <div lang="en"><h3>Auto Battle</h3><p>Pick a direction and the fights run themselves. Your skill is in the skill order and gear you choose.</p></div>
       </div>
       <div class="card feature">
         <div class="icon"><img class="px" src="assets/sprites/ui/icon_star_fragment.png" alt=""></div>
-        <div><h3>폭발하는 축복</h3><p>출정과 보스 처치마다 셋 중 하나. 한 판의 흐름을 바꾸는 운.</p></div>
+        <div lang="ko"><h3>폭발하는 축복</h3><p>출정과 보스 처치마다 셋 중 하나. 한 판의 흐름을 바꾸는 운.</p></div>
+        <div lang="en"><h3>Explosive Blessings</h3><p>Pick one of three each time you embark or defeat a boss. Luck that can turn a whole run.</p></div>
       </div>
       <div class="card feature">
         <div class="icon"><img class="px" src="assets/sprites/ui/icon_golden_cog.png" alt=""></div>
-        <div><h3>잃지 않는 성장</h3><p>세션이 끝나도 골드·유물·도감은 남는다. 강화가 쌓일수록 더 깊이 간다.</p></div>
+        <div lang="ko"><h3>잃지 않는 성장</h3><p>세션이 끝나도 골드·유물·도감은 남는다. 강화가 쌓일수록 더 깊이 간다.</p></div>
+        <div lang="en"><h3>Growth You Never Lose</h3><p>Your gold, relics and bestiary stay when a run ends. The more you upgrade, the deeper you go.</p></div>
       </div>
       <div class="card feature">
         <div class="icon"><img class="px" src="assets/sprites/ui/icon_silver_fang.png" alt=""></div>
-        <div><h3>더 깊은 곳으로</h3><p>들어갈수록 강한 몬스터와 보스. 도감을 채우고 유물을 모으고, 맵마다 다른 칩튠 음악.</p></div>
+        <div lang="ko"><h3>더 깊은 곳으로</h3><p>들어갈수록 강한 몬스터와 보스. 도감을 채우고 유물을 모으고, 맵마다 다른 칩튠 음악.</p></div>
+        <div lang="en"><h3>Ever Deeper</h3><p>Stronger monsters and bosses the further you go. Fill the bestiary, collect relics, and hear new chiptune music on every map.</p></div>
       </div>
     </div>
 
     <div class="loop">
-      <div class="card"><b>출정</b><p>매번 Lv 1 에서 시작해 축복 하나를 고른다.</p></div>
-      <div class="card"><b>탐험·전투</b><p>걸을수록 몬스터를 만나고 레벨이 오른다. 깊은 구역일수록 위험하다.</p></div>
-      <div class="card"><b>보스</b><p>구역 끝의 보스를 쓰러뜨리면 다음 맵이 열린다.</p></div>
-      <div class="card"><b>귀환·강화</b><p>기력이 다하거나 쓰러져도 전리품은 남는다. 로비에서 영구 강화.</p></div>
+      <div class="card"><div lang="ko"><b>출정</b><p>매번 Lv 1 에서 시작해 축복 하나를 고른다.</p></div><div lang="en"><b>Embark</b><p>Start at Lv 1 every run and pick a Blessing.</p></div></div>
+      <div class="card"><div lang="ko"><b>탐험·전투</b><p>걸을수록 몬스터를 만나고 레벨이 오른다. 깊은 구역일수록 위험하다.</p></div><div lang="en"><b>Explore &amp; Fight</b><p>Walk to meet monsters and level up. Deeper zones are more dangerous.</p></div></div>
+      <div class="card"><div lang="ko"><b>보스</b><p>구역 끝의 보스를 쓰러뜨리면 다음 맵이 열린다.</p></div><div lang="en"><b>Boss</b><p>Defeat the boss at the end of the zones to open the next map.</p></div></div>
+      <div class="card"><div lang="ko"><b>귀환·강화</b><p>기력이 다하거나 쓰러져도 전리품은 남는다. 로비에서 영구 강화.</p></div><div lang="en"><b>Return &amp; Upgrade</b><p>Run out of Stamina or fall in battle, and you still keep your loot. Upgrade for good in the lobby.</p></div></div>
     </div>
 
   </section>
 
   <section id="maps">
-    <h2 class="section-title">맵 <small>왼쪽 입구에서 오른쪽 보스까지</small></h2>
+    <h2 class="section-title"><span lang="ko">맵</span><span lang="en">Maps</span> <small lang="ko">왼쪽 입구에서 오른쪽 보스까지</small><small lang="en">From the entrance on the left to the boss on the right</small></h2>
     <div class="maps" id="map-list"></div>
   </section>
 
   <section id="download">
-    <h2 class="section-title">다운로드</h2>
+    <h2 class="section-title"><span lang="ko">다운로드</span><span lang="en">Download</span></h2>
     <div class="dl-latest">
       <a class="card dl" id="dl-android" href="test.html">
         <div class="plat">🤖</div>
-        <div><b>Android · Google Play</b><small>비공개 테스트 참여 중 · 무료로 먼저 해 보기</small></div>
-        <span class="arrow">테스트 하러 가기 →</span>
+        <div><b>Android · Google Play</b><small lang="ko">비공개 테스트 참여 중 · 무료로 먼저 해 보기</small><small lang="en">Closed test · Try it free</small></div>
+        <span class="arrow"><span lang="ko">테스트 하러 가기 →</span><span lang="en">Join →</span></span>
       </a>
       <div class="card dl offline" id="dl-steam">
         <div class="plat">🎮</div>
-        <div><b>PC · Steam</b><small>Steam 출시 준비 중</small></div>
-        <span class="arrow">준비 중</span>
+        <div><b>PC · Steam</b><small lang="ko">Steam 출시 준비 중</small><small lang="en">Coming to Steam</small></div>
+        <span class="arrow"><span lang="ko">준비 중</span><span lang="en">Coming soon</span></span>
       </div>
       <div class="card dl offline" id="dl-ios">
         <div class="plat">🍎</div>
-        <div><b>iPhone · App Store</b><small>App Store 출시 준비 중</small></div>
-        <span class="arrow">준비 중</span>
+        <div><b>iPhone · App Store</b><small lang="ko">App Store 출시 준비 중</small><small lang="en">Coming to the App Store</small></div>
+        <span class="arrow"><span lang="ko">준비 중</span><span lang="en">Coming soon</span></span>
       </div>
     </div>
     <a class="event" href="test.html#event">
       <span class="cup">☕</span>
-      <span><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
+      <span lang="ko"><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
         <small>자세히 보기 →</small></span>
+      <span lang="en"><b class="bold">Tester Event</b> We're giving Starbucks iced Americanos to testers picked by raffle from those who test actively
+        <small>Learn more →</small></span>
     </a>
-    <h3 class="section-title" style="font-size:18px;margin-top:28px">세이브 옮기기 <small>무료 배포판을 쓰던 분</small></h3>
+    <h3 class="section-title" style="font-size:18px;margin-top:28px"><span lang="ko">세이브 옮기기</span><span lang="en">Move Your Save</span> <small lang="ko">무료 배포판을 쓰던 분</small><small lang="en">For players of the free version</small></h3>
     <div class="dl-latest" id="dl-latest"></div>
-    <ul class="hint">
+    <ul class="hint" lang="ko">
       <li>무료 배포판은 끝났습니다. 이 APK 는 게임을 할 수 없고, 기기에 남은 세이브를 <b class="bold" style="color:#fff">세이브 코드</b>로 내보내는 기능만 있습니다.</li>
       <li>기존 무료판(Android) 위에 설치하고 열면 세이브 코드가 나옵니다. 복사해서 Google Play 정식판의 <b class="bold">설정 → 세이브 → 불러오기</b>에 붙여 넣으세요.</li>
       <li>처음이면 "출처를 알 수 없는 앱 설치"를 허용해야 합니다.</li>
       <li>PC 무료판은 더 이상 내려받을 수 없습니다. 1.0.1 을 설치했다면 로비의 <b class="bold">설정 → 세이브 → 내보내기</b>로 코드를 만들 수 있습니다.</li>
     </ul>
+    <ul class="hint" lang="en">
+      <li>The free version has ended. This APK can't run the game. It only exports the save left on your device as a <b class="bold" style="color:#fff">save code</b>.</li>
+      <li>Install it over your existing free version (Android) and open it to get a save code. Copy the code and paste it into <b class="bold">Settings → Save Data → Import</b> in the Google Play version.</li>
+      <li>If this is your first time, you'll need to allow installing apps from unknown sources.</li>
+      <li>The free PC version can no longer be downloaded. If you have 1.0.1 installed, you can make a code from <b class="bold">Settings → Save Data → Export</b> in the lobby.</li>
+    </ul>
   </section>
 
   <section id="releases">
-    <h2 class="section-title">릴리즈 노트 <small>이전 버전은 노트만 (다운로드 종료)</small></h2>
+    <h2 class="section-title"><span lang="ko">릴리즈 노트</span><span lang="en">Release Notes</span> <small lang="ko">이전 버전은 노트만 (다운로드 종료)</small><small lang="en">Notes only for older versions (downloads closed)</small></h2>
+    <p class="hint" id="notes-ko-only" lang="en" hidden>Some release notes are only available in Korean for now.</p>
     <div id="release-list"></div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">Enlevel Dungeon · 폰트 <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL) · <a href="privacy.html">개인정보처리방침</a></div>
+  <div class="wrap">Enlevel Dungeon · <span lang="ko">폰트</span><span lang="en">Font</span> <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL) · <a lang="ko" href="privacy.html">개인정보처리방침</a><a lang="en" href="privacy-en.html">Privacy Policy</a></div>
 </footer>
 
 <!-- npm run site 가 releases.json 과 파일 크기를 채운다 -->
@@ -293,16 +328,17 @@
   // 설치 파일 주소. {v} 버전, {file} 파일 이름 (GitHub Releases 배포는 npm run site -- --pages 가 바꾼다)
   window.DOWNLOAD_URL = 'https://github.com/lsadi0710/endless-dungeon-releases/releases/download/v{v}/{file}';</script>
 <script>
+  // 이름·설명, 레벨, 보스, 바닥 타일, 영어 이름·설명 (영어는 게임 번역 src/i18n/en/maps.ts 와 같게)
   const MAPS = [
-    ['잊혀진 숲', '모험이 시작되는 오래된 숲.', 1, 100, 'forest_guardian', 'forest_grass'],
-    ['버려진 광산', '광부들이 떠난 뒤 괴물들이 차지한 광산.', 100, 400, 'vein_lord', 'mine_floor'],
-    ['얼어붙은 협곡', '모든 것이 얼어붙은 깊은 협곡.', 400, 1000, 'frost_wyrm', 'canyon_snow'],
+    ['잊혀진 숲', '모험이 시작되는 오래된 숲.', 1, 100, 'forest_guardian', 'forest_grass', 'Forgotten Forest', 'An old forest where adventures begin.'],
+    ['버려진 광산', '광부들이 떠난 뒤 괴물들이 차지한 광산.', 100, 400, 'vein_lord', 'mine_floor', 'Abandoned Mine', 'A mine overrun by monsters after the miners fled.'],
+    ['얼어붙은 협곡', '모든 것이 얼어붙은 깊은 협곡.', 400, 1000, 'frost_wyrm', 'canyon_snow', 'Frozen Canyon', 'A deep canyon where everything is frozen.'],
   ];
   /** 4단계부터는 맵 수·이름·보스를 숨기고 잠긴 카드 하나로만 보여 준다 (스포일러 방지) */
   // 1.0.2 부터 내려받을 수 있는 건 세이브 이전용 APK 뿐 (PC 판 다운로드 종료, 게임은 Google Play·Steam)
   const FILES = [
     // 1.0.2 는 이름 변경 전에 배포한 파일 이름 그대로
-    ['apk', '세이브 이전용 APK', '💾', (v) => (v === '1.0.2' ? `EndlessDungeon-${v}.apk` : `EnlevelDungeon-${v}.apk`)],
+    ['apk', ['세이브 이전용 APK', 'Save Transfer APK'], '💾', (v) => (v === '1.0.2' ? `EndlessDungeon-${v}.apk` : `EnlevelDungeon-${v}.apk`)],
   ];
   const fmt = (n) => n.toLocaleString('en-US');
   const dlUrl = (v, file) => DOWNLOAD_URL.replace('{v}', v).replace('{file}', file);
@@ -313,60 +349,79 @@
     for (const k of kids) if (k != null) e.append(k);
     return e;
   };
+  /** 한·영 글을 나란히 넣는다. 어느 쪽을 보일지는 CSS 가 정한다 (lang.js) */
+  const pair = (ko, en) => {
+    const f = document.createDocumentFragment();
+    f.append(el('span', { lang: 'ko' }, ko), el('span', { lang: 'en' }, en));
+    return f;
+  };
 
   // 맵 카드
   const mapList = document.getElementById('map-list');
-  MAPS.forEach(([name, desc, min, max, boss, tile, isNew], i) => {
-    mapList.append(el('div', { class: `map${isNew ? ' new' : ''}`, style: `background-image:url(assets/sprites/tiles/${tile}.png)`, title: desc },
+  const mapCards = MAPS.map(([name, desc, min, max, boss, tile, nameEn, descEn, isNew], i) => {
+    const card = el('div', { class: `map${isNew ? ' new' : ''}`, style: `background-image:url(assets/sprites/tiles/${tile}.png)` },
       el('img', { class: 'px', src: `assets/sprites/monsters/${boss}.png`, alt: '' }),
-      el('div', { class: 'info' }, el('div', { class: 'no' }, `${i + 1}단계`), el('h3', {}, name), el('div', { class: 'lv' }, `Lv ${fmt(min)} – ${fmt(max)}`))));
+      el('div', { class: 'info' }, el('div', { class: 'no' }, pair(`${i + 1}단계`, `Stage ${i + 1}`)), el('h3', {}, pair(name, nameEn)), el('div', { class: 'lv' }, `Lv ${fmt(min)} – ${fmt(max)}`)));
+    mapList.append(card);
+    return card;
   });
   mapList.append(el('div', { class: 'map locked' },
     el('div', { class: 'lock' }, '?'),
-    el('div', { class: 'info' }, el('div', { class: 'no' }, `${MAPS.length + 1}단계 ~`), el('h3', {}, '???'), el('div', { class: 'lv' }, '직접 확인하세요'))));
+    el('div', { class: 'info' }, el('div', { class: 'no' }, pair(`${MAPS.length + 1}단계 ~`, `Stage ${MAPS.length + 1}+`)), el('h3', {}, '???'), el('div', { class: 'lv' }, pair('직접 확인하세요', 'See for yourself')))));
 
   // 히어로 보스: 맵 보스를 돌아가며
   let bi = 0;
   const heroBoss = document.getElementById('hero-boss');
+  // CSS 로 못 바꾸는 속성 글자 (그림 설명, 카드에 마우스를 올리면 나오는 설명)
+  const applyAttrs = () => {
+    const en = document.documentElement.lang === 'en';
+    document.getElementById('hero-walker').setAttribute('aria-label', en ? 'Hero' : '주인공');
+    heroBoss.alt = MAPS[bi][en ? 6 : 0];
+    mapCards.forEach((card, i) => (card.title = MAPS[i][en ? 7 : 1]));
+  };
   setInterval(() => {
     bi = (bi + 1) % MAPS.length;
     heroBoss.src = `assets/sprites/monsters/${MAPS[bi][4]}.png`;
-    heroBoss.alt = MAPS[bi][0];
+    applyAttrs();
   }, 2600);
+  applyAttrs();
+  document.addEventListener('langchange', applyAttrs);
 
   // 릴리즈
   let releases = [];
   try { releases = JSON.parse(document.getElementById('release-data').textContent); } catch { /* 빌드 전 */ }
-  const fileLink = (r, [key, label, , name]) => {
+  const fileLink = (r, [key, [label, labelEn], , name]) => {
     const f = r.files?.[key];
     if (!f) return null;
     return HAS_DOWNLOADS
-      ? el('a', { href: dlUrl(r.version, name(r.version)), download: '' }, label, el('small', {}, size(f)))
-      : el('span', { class: 'file' }, label, el('small', {}, size(f)));
+      ? el('a', { href: dlUrl(r.version, name(r.version)), download: '' }, pair(label, labelEn), el('small', {}, size(f)))
+      : el('span', { class: 'file' }, pair(label, labelEn), el('small', {}, size(f)));
   };
   const latest = releases[0];
   const dlLatest = document.getElementById('dl-latest');
   if (latest) {
-    document.getElementById('hero-meta').textContent = 'Android 비공개 테스트 · iOS·Steam 준비 중';
-    for (const [key, label, icon, name] of FILES) {
+    document.getElementById('hero-meta').replaceChildren(pair('Android 비공개 테스트 · iOS·Steam 준비 중', 'Android closed test · iOS and Steam coming soon'));
+    for (const [key, [label, labelEn], icon, name] of FILES) {
       const f = latest.files?.[key];
       const link = f && HAS_DOWNLOADS;
       dlLatest.append(el(link ? 'a' : 'div', { class: `card dl${f ? '' : ' missing'}${f && !link ? ' offline' : ''}`, ...(link ? { href: dlUrl(latest.version, name(latest.version)), download: '' } : {}) },
         el('div', { class: 'plat' }, icon),
-        el('div', {}, el('b', {}, label), el('small', {}, f ? `${name(latest.version)} · ${size(f)}` : '준비 중')),
-        el('span', { class: 'arrow' }, link ? '⬇' : '배포 준비 중')));
+        el('div', {}, el('b', {}, pair(label, labelEn)), el('small', {}, f ? `${name(latest.version)} · ${size(f)}` : pair('준비 중', 'Coming soon'))),
+        el('span', { class: 'arrow' }, link ? '⬇' : pair('배포 준비 중', 'Coming soon'))));
     }
   } else {
-    dlLatest.append(el('div', { class: 'card' }, '릴리즈 정보가 없습니다. npm run site 로 페이지를 만들어 주세요.'));
+    dlLatest.append(el('div', { class: 'card' }, pair('릴리즈 정보가 없습니다. npm run site 로 페이지를 만들어 주세요.', 'No release info. Build the page with npm run site.')));
   }
+  // 영어 노트 (releases.json 의 en) 가 없는 버전은 영어 화면에서도 한국어로 보여 주고 안내를 띄운다
+  document.getElementById('notes-ko-only').hidden = releases.every((r) => r.en);
   const list = document.getElementById('release-list');
   releases.forEach((r, i) => {
     const links = FILES.map((f) => fileLink(r, f)).filter(Boolean);
     list.append(el('article', { class: 'card release', id: `v${r.version}` },
-      el('header', {}, el('span', { class: 'ver' }, `v${r.version}`), el('span', { class: 'name' }, r.title), i === 0 ? el('span', { class: 'latest' }, 'LATEST') : null, r.beta ? el('span', { class: 'beta' }, 'BETA') : null, el('span', { class: 'date' }, r.date)),
-      el('ul', {}, ...r.notes.map((n) => el('li', {}, n))),
+      el('header', {}, el('span', { class: 'ver' }, `v${r.version}`), el('span', { class: 'name' }, pair(r.title, r.en?.title ?? r.title)), i === 0 ? el('span', { class: 'latest' }, 'LATEST') : null, r.beta ? el('span', { class: 'beta' }, 'BETA') : null, el('span', { class: 'date' }, r.date)),
+      el('ul', {}, ...r.notes.map((n, j) => el('li', {}, pair(n, r.en?.notes[j] ?? n)))),
       // 이전 버전은 다운로드를 닫았다 (노트만)
-      el('div', { class: 'files' }, ...(i > 0 ? [el('span', { class: 'none' }, '이전 버전은 다운로드할 수 없습니다')] : links.length ? links : [el('span', { class: 'none' }, '다운로드 파일 없음')]))));
+      el('div', { class: 'files' }, ...(i > 0 ? [el('span', { class: 'none' }, pair('이전 버전은 다운로드할 수 없습니다', 'Older versions can no longer be downloaded'))] : links.length ? links : [el('span', { class: 'none' }, pair('다운로드 파일 없음', 'No download files'))]))));
   });
 </script>
 </body>
