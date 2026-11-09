@@ -149,6 +149,11 @@
   .event .cup { font-size: 26px; }
   .event small { display: block; color: var(--text); font-size: 12px; }
   .dl.offline .arrow { color: var(--muted); font-size: 12px; }
+  /* 채널 (유튜브·인스타) */
+  .sub-title { margin: 28px 0 10px; font-size: 18px; color: var(--title); text-shadow: 0 2px 0 #000; }
+  .dl.social .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
+  .dl .plat.yt { background: #c4302b; color: #fff; font-size: 18px; }
+  .dl .plat.ig { background: linear-gradient(45deg, #f9a03f, #d62976 55%, #7a3ac9); }
 
   footer { margin-top: 56px; padding: 24px 0 40px; border-top: 2px solid var(--panel-2); color: var(--muted); font-size: 12px; text-align: center; }
 
@@ -268,11 +273,25 @@
       <span><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
         <small>자세히 보기 →</small></span>
     </a>
+
+    <h3 class="sub-title"><span lang="ko">소식 받기</span><span lang="en">Follow Us</span></h3>
+    <div class="dl-latest">
+      <a class="card dl social" id="ch-youtube" href="https://www.youtube.com/@EnlevelDungeon" target="_blank" rel="noopener">
+        <div class="plat yt">▶</div>
+        <div><b>YouTube · @EnlevelDungeon</b><small lang="ko">패치노트와 플레이 영상</small><small lang="en">Patch notes and gameplay videos</small></div>
+        <span class="arrow"><span lang="ko">열기 ↗</span><span lang="en">Open ↗</span></span>
+      </a>
+      <a class="card dl social" id="ch-instagram" href="https://www.instagram.com/enleveldungeon/" target="_blank" rel="noopener">
+        <div class="plat ig">📷</div>
+        <div><b>Instagram · @enleveldungeon</b><small lang="ko">새 소식과 릴스</small><small lang="en">News and Reels</small></div>
+        <span class="arrow"><span lang="ko">열기 ↗</span><span lang="en">Open ↗</span></span>
+      </a>
+    </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">Enlevel Dungeon · <span lang="ko">폰트</span><span lang="en">Font</span> <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL) · <a lang="ko" href="privacy.html">개인정보처리방침</a><a lang="en" href="privacy-en.html">Privacy Policy</a></div>
+  <div class="wrap">Enlevel Dungeon · <a href="https://www.youtube.com/@EnlevelDungeon" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.instagram.com/enleveldungeon/" target="_blank" rel="noopener">Instagram</a> · <span lang="ko">폰트</span><span lang="en">Font</span> <a href="https://galmuri.quiple.dev/">Galmuri</a> (OFL) · <a lang="ko" href="privacy.html">개인정보처리방침</a><a lang="en" href="privacy-en.html">Privacy Policy</a></div>
 </footer>
 
 <script>
