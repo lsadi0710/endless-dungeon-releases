@@ -143,11 +143,7 @@
   .dl b { display: block; color: #fff; font-weight: normal; font-family: Galmuri11Bold, monospace; }
   .dl small { color: var(--muted); font-size: 12px; }
   .dl .arrow { margin-left: auto; color: var(--gold); font-size: 20px; }
-  #dl-android .arrow, #dl-ios .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
-  /* 테스터 이벤트 (비공개 테스트 기간) */
-  .event { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 12px 16px; background: #1e3a2e; border: 2px solid var(--good); color: #fff; text-decoration: none; font-size: 14px; }
-  .event .cup { font-size: 26px; }
-  .event small { display: block; color: var(--text); font-size: 12px; }
+  #dl-ios .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
   .dl.offline .arrow { color: var(--muted); font-size: 12px; }
   /* 채널 (유튜브·인스타) */
   .sub-title { margin: 28px 0 10px; font-size: 18px; color: var(--title); text-shadow: 0 2px 0 #000; }
@@ -184,7 +180,6 @@
     <div class="tabs">
       <a class="tab" href="#about"><span lang="ko">소개</span><span lang="en">About</span></a>
       <a class="tab" href="#maps"><span lang="ko">맵</span><span lang="en">Maps</span></a>
-      <a class="tab" href="test.html"><span lang="ko">테스트 참여</span><span lang="en">Join Test</span></a>
       <a class="tab" href="#download"><span lang="ko">다운로드</span><span lang="en">Download</span></a>
     </div>
     <div class="lang-switch" role="group" aria-label="언어 / Language">
@@ -204,7 +199,7 @@
       <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
     </div>
     <a class="cta" id="hero-cta" href="#download"><span lang="ko">▶ 다운로드</span><span lang="en">▶ Download</span></a>
-    <div class="meta"><span lang="ko">iPhone 출시 · Android 비공개 테스트 · Steam 준비 중</span><span lang="en">Out now on iPhone · Android closed test · Steam coming soon</span></div>
+    <div class="meta"><span lang="ko">iPhone 출시 · Android 곧 출시 · Steam 준비 중</span><span lang="en">Out now on iPhone · Android coming soon · Steam coming soon</span></div>
   </div>
 </header>
 
@@ -256,23 +251,17 @@
         <div><b>iPhone · App Store</b><small lang="ko">App Store 에 출시되었습니다</small><small lang="en">Out now on the App Store</small></div>
         <span class="arrow"><span lang="ko">열기 ↗</span><span lang="en">Open ↗</span></span>
       </a>
-      <a class="card dl" id="dl-android" href="test.html">
+      <div class="card dl offline" id="dl-android">
         <div class="plat">🤖</div>
-        <div><b>Android · Google Play</b><small lang="ko">비공개 테스트 참여 중 · 무료로 먼저 해 보기</small><small lang="en">Closed test · Try it free</small></div>
-        <span class="arrow"><span lang="ko">테스트 하러 가기 →</span><span lang="en">Join →</span></span>
-      </a>
+        <div><b>Android · Google Play</b><small lang="ko">Google Play 출시를 앞두고 있습니다</small><small lang="en">Coming soon to Google Play</small></div>
+        <span class="arrow"><span lang="ko">곧 출시</span><span lang="en">Coming soon</span></span>
+      </div>
       <div class="card dl offline" id="dl-steam">
         <div class="plat">🎮</div>
         <div><b>PC · Steam</b><small lang="ko">Steam 출시 준비 중</small><small lang="en">Coming to Steam</small></div>
         <span class="arrow"><span lang="ko">준비 중</span><span lang="en">Coming soon</span></span>
       </div>
     </div>
-    <!-- 테스터 이벤트는 한국어 화면에만 (배너째 숨긴다) -->
-    <a class="event" lang="ko" data-ko-only href="test.html#event">
-      <span class="cup">☕</span>
-      <span><b class="bold">테스터 이벤트</b> 열심히 테스트해 주신 분들 중 추첨으로 스타벅스 아이스 아메리카노를 드려요
-        <small>자세히 보기 →</small></span>
-    </a>
 
     <h3 class="sub-title"><span lang="ko">유튜브 · 인스타그램</span><span lang="en">YouTube · Instagram</span></h3>
     <div class="dl-latest">
