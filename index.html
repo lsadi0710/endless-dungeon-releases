@@ -143,7 +143,7 @@
   .dl b { display: block; color: #fff; font-weight: normal; font-family: Galmuri11Bold, monospace; }
   .dl small { color: var(--muted); font-size: 12px; }
   .dl .arrow { margin-left: auto; color: var(--gold); font-size: 20px; }
-  #dl-ios .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
+  #dl-ios .arrow, #dl-android .arrow { font: 14px Galmuri11Bold, monospace; white-space: nowrap; }
   .dl.offline .arrow { color: var(--muted); font-size: 12px; }
   /* 채널 (유튜브·인스타) */
   .sub-title { margin: 28px 0 10px; font-size: 18px; color: var(--title); text-shadow: 0 2px 0 #000; }
@@ -199,7 +199,7 @@
       <img class="px" id="hero-boss" src="assets/sprites/monsters/forest_guardian.png" alt="숲의 수호자">
     </div>
     <a class="cta" id="hero-cta" href="#download"><span lang="ko">▶ 다운로드</span><span lang="en">▶ Download</span></a>
-    <div class="meta"><span lang="ko">iPhone 출시 · Android 곧 출시 · Steam 준비 중</span><span lang="en">Out now on iPhone · Android coming soon · Steam coming soon</span></div>
+    <div class="meta"><span lang="ko">iPhone · Android 출시 · Steam 준비 중</span><span lang="en">Out now on iPhone &amp; Android · Steam coming soon</span></div>
   </div>
 </header>
 
@@ -251,11 +251,11 @@
         <div><b>iPhone · App Store</b><small lang="ko">App Store 에 출시되었습니다</small><small lang="en">Out now on the App Store</small></div>
         <span class="arrow"><span lang="ko">열기 ↗</span><span lang="en">Open ↗</span></span>
       </a>
-      <div class="card dl offline" id="dl-android">
+      <a class="card dl" id="dl-android" href="https://play.google.com/store/apps/details?id=com.ttat.endlessdungeon" target="_blank" rel="noopener">
         <div class="plat">🤖</div>
-        <div><b>Android · Google Play</b><small lang="ko">Google Play 출시를 앞두고 있습니다</small><small lang="en">Coming soon to Google Play</small></div>
-        <span class="arrow"><span lang="ko">곧 출시</span><span lang="en">Coming soon</span></span>
-      </div>
+        <div><b>Android · Google Play</b><small lang="ko">Google Play 에 출시되었습니다</small><small lang="en">Out now on Google Play</small></div>
+        <span class="arrow"><span lang="ko">열기 ↗</span><span lang="en">Open ↗</span></span>
+      </a>
       <div class="card dl offline" id="dl-steam">
         <div class="plat">🎮</div>
         <div><b>PC · Steam</b><small lang="ko">Steam 출시 준비 중</small><small lang="en">Coming to Steam</small></div>
