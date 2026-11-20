@@ -1,9 +1,11 @@
 // 소개·테스트 페이지 한·영 전환. <head> 에서 바로 실행해 첫 화면부터 고른 언어로 그린다.
 // 글은 두 언어를 나란히 둔다: <span lang="ko">…</span><span lang="en">…</span>. <html lang> 과 다른 쪽을 페이지 CSS 가 숨긴다.
-// 언어: 주소의 ?lang=ko|en → 저장된 선택 → 브라우저 언어 (ko 로 시작하면 한국어, 그 밖은 영어. 게임과 같은 규칙)
+// 언어: 주소의 ?lang=ko|en → 저장된 선택 → 빌드 기본 언어 (아래 DEFAULT_LANG) → 브라우저 언어 (ko 로 시작하면 한국어, 그 밖은 영어. 게임과 같은 규칙)
 // CSS 로 못 바꾸는 것: 페이지 제목·설명은 <html data-title-en data-desc-en> (없으면 그대로), 나머지 속성 글자는 langchange 이벤트로.
 (() => {
   const KEY = 'enlevel-site-lang';
+  // 처음 온 사람의 언어. `npm run site -- --lang en` 처럼 빌드하면 scripts/build-site.mjs 가 이 줄을 바꾼다. null 이면 브라우저 언어
+  const DEFAULT_LANG = 'ko';
   const root = document.documentElement;
   const meta = document.querySelector('meta[name="description"]');
   const ko = { title: document.title, desc: meta?.content };
@@ -36,7 +38,7 @@
 
   const fromUrl = valid(new URLSearchParams(location.search).get('lang'));
   if (fromUrl) save(fromUrl);
-  apply(fromUrl ?? stored() ?? (navigator.language?.toLowerCase().startsWith('ko') ? 'ko' : 'en'));
+  apply(fromUrl ?? stored() ?? valid(DEFAULT_LANG) ?? (navigator.language?.toLowerCase().startsWith('ko') ? 'ko' : 'en'));
 
   document.addEventListener('DOMContentLoaded', markButtons);
   document.addEventListener('click', (e) => {
