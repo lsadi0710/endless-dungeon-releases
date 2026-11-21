@@ -6,6 +6,26 @@
 <title>Enlevel Dungeon</title>
 <meta name="description" content="2D 도트 자동 전투 로그라이크. 끝없는 던전을 걸으며 레벨을 올리고, 영구 성장으로 다음 보스를 넘는다.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<!-- Google Analytics: Enlevel Dungeon -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-101DW9H9K3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-101DW9H9K3');
+
+  document.addEventListener('click', function (event) {
+    const link = event.target instanceof Element && event.target.closest('a');
+    if (!link) return;
+
+    if (link.id === 'dl-ios') {
+      gtag('event', 'app_store_click', { send_to: 'G-101DW9H9K3' });
+    } else if (link.id === 'dl-android') {
+      gtag('event', 'play_store_click', { send_to: 'G-101DW9H9K3' });
+    }
+  });
+</script>
+<!-- /Google Analytics -->
 <script src="lang.js"></script>
 <style>
   /* 한·영 전환 (lang.js): <html lang> 과 다른 쪽 글을 숨긴다 */
